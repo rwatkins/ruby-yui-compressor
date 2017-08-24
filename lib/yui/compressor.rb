@@ -106,7 +106,7 @@ module YUI #:nodoc:
         elsif $?.signaled?
           raise RuntimeError,
             "Command '#{full_command}' terminated because of an uncaught " \
-            "signal (status=#{$?.status}, termsig=#{$?.termsig})"
+            "signal (#{$?}, termsig=#{$?.termsig})"
         else
           # Bourne shells tend to blow up here when the command fails, usually
           # because java is missing
