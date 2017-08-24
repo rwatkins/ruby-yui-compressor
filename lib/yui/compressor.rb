@@ -89,15 +89,19 @@ module YUI #:nodoc:
         tempfile.flush
         full_command = "%s %s" % [command, tempfile.path]
 
+        puts "[YUI::Compressor] full_command: #{full_command.inspect}"
         begin
           output = `#{full_command}`
+          puts "[YUI::Compressor] output: #{output.inspect}"
         rescue Exception => e
           # windows shells tend to blow up here when the command fails
+          puts "[YUI::Compressor] command hit exception: #{e.inspect}"
           raise RuntimeError, "compression failed: %s" % e.message
         ensure
           tempfile.close!
         end
 
+        puts "[YUI::Compressor] $?: #{$?.inspect}"
         if $?.exitstatus.zero?
           output
         else
