@@ -102,7 +102,7 @@ module YUI #:nodoc:
         end
 
         puts "[YUI::Compressor] $?: #{$?.inspect}"
-        if $?.exitstatus.zero?
+        if $?.exited? && $?.exitstatus.zero?
           output
         else
           # Bourne shells tend to blow up here when the command fails, usually
