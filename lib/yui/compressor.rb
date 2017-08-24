@@ -92,7 +92,6 @@ module YUI #:nodoc:
         puts "[YUI::Compressor] full_command: #{full_command.inspect}"
         begin
           output = `#{full_command}`
-          puts "[YUI::Compressor] output: #{output.inspect}"
         rescue Exception => e
           # windows shells tend to blow up here when the command fails
           puts "[YUI::Compressor] command hit exception: #{e.inspect}"
@@ -104,6 +103,10 @@ module YUI #:nodoc:
         puts "[YUI::Compressor] $?: #{$?.inspect}"
         if $?.exited? && $?.exitstatus.zero?
           output
+        elsif $?.signaled?
+          raise RuntimeError,
+            "Command '#{full_command}' terminated because of an uncaught " \
+            "signal (status=#{$?.status}, termsig=#{$?.termsig})"
         else
           # Bourne shells tend to blow up here when the command fails, usually
           # because java is missing
